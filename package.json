@@ -5,6 +5,7 @@
   "main": "sous.js",
   "scripts": {
     "start": "node sous.js",
+    "build": "vite build",
     "web": "vite",
     "build:web": "vite build",
     "preview:web": "vite preview",
