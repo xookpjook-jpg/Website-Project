@@ -62,11 +62,12 @@ app.use(cors());
 app.use(express.json());
 
 
-// เชื่อมต่อ MongoDB หากไม่สำเร็จจะทำงานต่อด้วย in-memory storage + disk backup
-mongoose.connect('mongodb://localhost:27017/koop_db')
+// เชื่อมต่อ MongoDB (รองรับ Cloud MongoDB Atlas ผ่าน MONGODB_URI หรือ localhost)
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/koop_db';
+mongoose.connect(MONGODB_URI)
     .then(() => console.log('เชื่อมต่อฐานข้อมูล MongoDB สำเร็จแล้ว! 🎉'))
     .catch(err => {
-        console.warn('📌 ไม่พบบริการ MongoDB - เปลี่ยนไปใช้ Storage ดิสก์/In-Memory อัตโนมัติ');
+        console.warn('📌 ไม่สามารถเชื่อมต่อ MongoDB (' + err.message + ') - เปลี่ยนไปใช้ Storage ดิสก์/In-Memory อัตโนมัติ');
         useMemoryStorage = true;
     });
 
