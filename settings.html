@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ตั้งค่าระบบ - WealthFlow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: rgba(15, 23, 42, 0.85);
+      --panel-border: rgba(51, 65, 85, 0.6);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-grad: linear-gradient(135deg, #6366f1, #8b5cf6);
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --amber: #f59e0b;
+      --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b1120 70%);
+      background-attachment: fixed;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding: 20px 24px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .topbar p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .btn, .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-grad);
+      color: white;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
+    .back-link {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--panel-border);
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .panel {
+      padding: 24px;
+      border-radius: 20px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .field input, .field select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--panel-border);
+      background: rgba(11, 17, 32, 0.8);
+      color: var(--text);
+      outline: none;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .toast-msg {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+    }
+
+    .toast-success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div>
+        <h1>⚙️ ตั้งค่าระบบ WealthFlow Pro</h1>
+        <p>ปรับแต่งโปรไฟล์ส่วนตัว, ธีมสี, วันเงินเดือนออก และจัดการข้อมูลสำรอง</p>
+      </div>
+      <a class="back-link" href="/">← กลับสู่หน้าแอปพลิเคชัน</a>
+    </div>
+
+    <div class="grid">
+      <!-- 1. Profile & Account -->
+      <section class="panel">
+        <h2>👤 โปรไฟล์ & ข้อมูลผู้ใช้</h2>
+        <p>กำหนดชื่อที่ต้องการแสดงผล, อีเมล และวันตัดรอบเงินเดือน</p>
+        
+        <div class="field">
+          <label for="userName">ชื่อผู้ใช้งาน</label>
+          <input id="userName" type="text" placeholder="ธนดล มั่งคั่ง" />
+        </div>
+
+        <div class="field">
+          <label for="userEmail">อีเมล</label>
+          <input id="userEmail" type="email" placeholder="user@wealthflow.pro" />
+        </div>
+
+        <div class="field">
+          <label for="userPayday">วันเงินเดือนออก</label>
+          <select id="userPayday">
+            <option value="1">วันที่ 1 ของเดือน</option>
+            <option value="25" selected>วันที่ 25 ของเดือน</option>
+            <option value="28">วันที่ 28 ของเดือน</option>
+            <option value="30">วันที่ 30 ของเดือน</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;" id="saveProfileBtn">บันทึกโปรไฟล์</button>
+        <div class="toast-msg" id="profileStatus"></div>
+      </section>
+
+      <!-- 2. Appearance & Visuals -->
+      <section class="panel">
+        <h2>🎨 ธีม & การแสดงผล</h2>
+        <p>เลือกสี Accent และเปิด/ปิดอนิเมชั่นลำแสงการเงิน</p>
+
+        <div class="field">
+          <label for="accentSelect">โทนสีหลัก (Accent Color)</label>
+          <select id="accentSelect">
+            <option value="indigo">Indigo (น้ำเงินคราม)</option>
+            <option value="violet">Violet (ม่วงอเมทิสต์)</option>
+            <option value="emerald">Emerald (เขียวมรกต)</option>
+            <option value="cyan">Cyan (ฟ้าสว่างนีออน)</option>
+            <option value="amber">Amber (ทองอำพัน)</option>
+            <option value="rose">Rose (ชมพูกุหลาบ)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="currencySelect">สกุลเงิน</label>
+          <select id="currencySelect">
+            <option value="THB">บาทไทย (฿ THB)</option>
+            <option value="USD">ดอลลาร์ ($ USD)</option>
+            <option value="EUR">ยูโร (€ EUR)</option>
+            <option value="JPY">เยน (¥ JPY)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;" id="saveAppearanceBtn">บันทึกการแสดงผล</button>
+        <div class="toast-msg" id="appearanceStatus"></div>
+      </section>
+
+      <!-- 3. Financial Limits -->
+      <section class="panel">
+        <h2>🎯 เพดานงบประมาณ & เป้าหมาย</h2>
+        <p>กำหนดเพดานค่าใช้จ่ายและเป้าหมายเงินออมประจำเดือน</p>
+
+        <div class="field">
+          <label for="expenseLimit">เพดานรายจ่ายสูงสุด (บาท/เดือน)</label>
+          <input id="expenseLimit" type="number" value="30000" />
+        </div>
+
+        <div class="field">
+          <label for="savingsGoal">เป้าหมายเงินออม (บาท/เดือน)</label>
+          <input id="savingsGoal" type="number" value="20000" />
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;" id="saveTargetsBtn">บันทึกงบประมาณ</button>
+        <div class="toast-msg" id="targetsStatus"></div>
+      </section>
+
+      <!-- 4. Data Management -->
+      <section class="panel">
+        <h2>💾 สำรอง & กู้คืนข้อมูล</h2>
+        <p>ดาวน์โหลดไฟล์สำรองข้อมูล JSON หรือส่งออก CSV สำหรับ Excel</p>
+
+        <div class="btn-row" style="flex-direction: column;">
+          <button class="btn btn-primary" id="exportJsonBtn">💾 ดาวน์โหลดไฟล์สำรอง JSON</button>
+          <a class="btn back-link" href="/" style="text-align: center;">🚀 ไปที่แดชบอร์ดหลัก</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Load existing settings
+    function loadSettings() {
+      try {
+        const profile = JSON.parse(localStorage.getItem('wealthflow_user_profile') || '{}');
+        if (profile.name) document.getElementById('userName').value = profile.name;
+        if (profile.email) document.getElementById('userEmail').value = profile.email;
+        if (profile.payday) document.getElementById('userPayday').value = profile.payday;
+        if (profile.currency) document.getElementById('currencySelect').value = profile.currency;
+
+        const accent = localStorage.getItem('wealthflow_accent') || 'indigo';
+        document.getElementById('accentSelect').value = accent;
+
+        const targets = JSON.parse(localStorage.getItem('wealthflow_targets') || '{}');
+        if (targets.monthlyExpenseLimit) document.getElementById('expenseLimit').value = targets.monthlyExpenseLimit;
+        if (targets.monthlySavingsGoal) document.getElementById('savingsGoal').value = targets.monthlySavingsGoal;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function showToast(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = 'toast-msg toast-success';
+      setTimeout(() => {
+        el.style.display = 'none';
+      }, 3000);
+    }
+
+    document.getElementById('saveProfileBtn').addEventListener('click', () => {
+      const profile = JSON.parse(localStorage.getItem('wealthflow_user_profile') || '{}');
+      profile.name = document.getElementById('userName').value.trim() || 'ผู้ใช้งาน WealthFlow';
+      profile.email = document.getElementById('userEmail').value.trim() || 'user@wealthflow.pro';
+      profile.payday = Number(document.getElementById('userPayday').value) || 25;
+      localStorage.setItem('wealthflow_user_profile', JSON.stringify(profile));
+      showToast('profileStatus', '✓ บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว');
+    });
+
+    document.getElementById('saveAppearanceBtn').addEventListener('click', () => {
+      const accent = document.getElementById('accentSelect').value;
+      const currency = document.getElementById('currencySelect').value;
+      localStorage.setItem('wealthflow_accent', accent);
+
+      const profile = JSON.parse(localStorage.getItem('wealthflow_user_profile') || '{}');
+      profile.currency = currency;
+      profile.currencySymbol = currency === 'USD' ? '$' : (currency === 'EUR' ? '€' : (currency === 'JPY' ? '¥' : '฿'));
+      localStorage.setItem('wealthflow_user_profile', JSON.stringify(profile));
+
+      showToast('appearanceStatus', '✓ บันทึกการแสดงผลเรียบร้อยแล้ว');
+    });
+
+    document.getElementById('saveTargetsBtn').addEventListener('click', () => {
+      const targets = JSON.parse(localStorage.getItem('wealthflow_targets') || '{}');
+      targets.monthlyExpenseLimit = Number(document.getElementById('expenseLimit').value) || 30000;
+      targets.monthlySavingsGoal = Number(document.getElementById('savingsGoal').value) || 20000;
+      localStorage.setItem('wealthflow_targets', JSON.stringify(targets));
+      showToast('targetsStatus', '✓ บันทึกเป้าหมายงบประมาณเรียบร้อยแล้ว');
+    });
+
+    document.getElementById('exportJsonBtn').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/products').catch(() => null);
+        const records = res ? await res.json() : [];
+        const backupData = {
+          app: 'WealthFlow Pro',
+          exportDate: new Date().toISOString(),
+          profile: JSON.parse(localStorage.getItem('wealthflow_user_profile') || '{}'),
+          targets: JSON.parse(localStorage.getItem('wealthflow_targets') || '{}'),
+          wallets: JSON.parse(localStorage.getItem('wealthflow_wallet_balances') || '{}'),
+          records
+        };
+        const jsonString = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
+        const a = document.createElement('a');
+        a.href = jsonString;
+        a.download = 'wealthflow_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) {
+        alert('เกิดข้อผิดพลาดในการสำรองข้อมูล');
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', loadSettings);
+  </script>
+</body>
+</html>
